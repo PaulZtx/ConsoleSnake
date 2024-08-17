@@ -12,10 +12,10 @@ public struct Point
     public static implicit operator Point((int, int, char) value) =>
         new Point() { X = value.Item1, Y = value.Item2, Symbol = value.Item3 };
     
-    // public static bool operator ==(Point a, Point b) =>
-    //     (a.X == b.X && a.Y == b.Y) ? true : false;
-    //
-    // public static bool operator !=(Point a, Point b) =>
-    //     (a.X != b.X || a.Y != b.Y) ? true : false;
+    public static bool operator ==(Point a, Point b) =>
+        (a.X == b.X && a.Y == b.Y);
+    
+    public static bool operator !=(Point a, Point b) =>
+        (a.X != b.X || a.Y != b.Y);
     
 }

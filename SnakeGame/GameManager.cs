@@ -6,6 +6,8 @@ namespace SnakeGame;
 public class GameManager
 {
     private Snake _snake;
+    private Point? _food;
+    private Random _random;
     private Direction _direction;
     private int _width;
     private int _height;
@@ -16,6 +18,7 @@ public class GameManager
     /// <param name="height"></param>
     public GameManager(int height)
     {
+        _random = new Random();
         _direction = Direction.Right;
         _height = height;
         _width = (int)(height * 2.5);
@@ -25,7 +28,9 @@ public class GameManager
         Console.WindowWidth = _width + 1;
     }
     
-
+    /// <summary>
+    /// Запуск игры
+    /// </summary>
     public void StartGame()
     {
         while (true)
@@ -53,7 +58,8 @@ public class GameManager
             DrawFiled();
             DrawPoints(_snake.GetPoints());
             _snake.Move(_direction);
-
+            SpawnFood();
+            
             Thread.Sleep(_direction is Direction.Down or Direction.Up ? 100 : 40);
         }
     }
@@ -127,5 +133,25 @@ public class GameManager
             Console.ReadKey();
             Environment.Exit(0);
         }
+    }
+
+    /// <summary>
+    /// Отрисовка еды
+    /// </summary>
+    private void SpawnFood()
+    {
+        if (_food == _snake.GetHead)
+        {
+            _food = null;
+            _snake.Eat();
+        }
+        if (_food is not null)
+        {
+            DrawPoint(_food.Value);
+            return;
+        }
+        
+        _food = (_random.Next() % (_width - 2) + 1, _random.Next() % (_height - 2) + 1, '@');
+        DrawPoint(_food.Value);
     }
 }

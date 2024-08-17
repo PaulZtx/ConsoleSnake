@@ -6,6 +6,7 @@ namespace SnakeGame;
 public class Snake
 {
     private const char Symbol = '*';
+    private bool _isEat = false;
     private readonly Queue<Point> _snake;
 
     // private Point Head => _snake.Dequeue();
@@ -27,6 +28,11 @@ public class Snake
         }
     }
 
+    /// <summary>
+    /// Получение позиции головы
+    /// </summary>
+    public Point GetHead => _snake.Last();
+    
     /// <summary>
     /// Возвращаем все точки для отрисовки
     /// </summary>
@@ -63,9 +69,29 @@ public class Snake
         ChangeSnake(head);
     }
 
+    /// <summary>
+    /// Поглащение еды
+    /// </summary>
+    public void Eat()
+    {
+        _isEat = true;
+    }
+
+    /// <summary>
+    /// Изменение состояния змеи
+    /// </summary>
+    /// <param name="point">Новое значение головы</param>
     private void ChangeSnake(Point point)
     {
-        _snake.Dequeue();
+        if (!_isEat)
+        {
+            _snake.Dequeue();
+        }
+        else
+        {
+            _isEat = false;
+        }
+        
         _snake.Enqueue(point);
     }
 }
